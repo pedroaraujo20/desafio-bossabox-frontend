@@ -16,6 +16,7 @@ export const Content = styled.div`
   flex-direction: column;
 
   h1 {
+    color: #7159c1;
     display: flex;
     align-items: flex-start;
     font-size: 30px;
@@ -91,4 +92,55 @@ export const Button = styled.button`
   }
 `;
 
-export const Tools = styled.div``;
+export const Tools = styled.div`
+  margin-top: 15px;
+
+  li {
+    background: #fff;
+    border: 1px solid #7159c1;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+
+    div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+
+      a {
+        color: #7159c1;
+        font-size: 20px;
+
+        &:hover {
+          color: ${darken(0.1, '#7159c1')};
+        }
+      }
+
+      button {
+        background: none;
+        border: 0;
+        color: #7159c1;
+
+        &:hover {
+          color: ${darken(0.1, '#7159c1')};
+        }
+      }
+    }
+
+    p {
+      margin-bottom: 10px;
+      font-size: 16px;
+      line-height: 20px;
+    }
+
+    span {
+      font-weight: bold;
+      color: #7159c1;
+
+      &:hover {
+        cursor: pointer;
+        color: ${darken(0.1, '#7159c1')};
+      }
+    }
+  }
+`;
