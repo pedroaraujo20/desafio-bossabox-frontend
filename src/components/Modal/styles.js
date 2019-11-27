@@ -19,6 +19,21 @@ export const Content = styled.div`
   padding: 30px;
   width: 450px;
 
+  p {
+    margin-top: 20px;
+  }
+
+  h1 {
+    font-weight: normal;
+    font-size: 16px;
+  }
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   form {
     > span {
       display: block;
