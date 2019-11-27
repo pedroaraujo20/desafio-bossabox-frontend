@@ -38,7 +38,13 @@ export default function Dashboard() {
     async function loadTools() {
       try {
         const response = await api.get('/tools');
-        setTools(response.data);
+
+        const data = response.data.map(tool => ({
+          ...tool,
+          hashTag: tool.tags.map(tag => `#${tag} `),
+        }));
+
+        setTools(data);
       } catch (err) {
         toast.error(err);
       }
@@ -46,9 +52,14 @@ export default function Dashboard() {
     loadTools();
   }, []);
 
-  async function handleSubmit(data) {
+  async function handleSubmit({ title, link, description, tags }) {
     try {
-      await api.post('/tools', data);
+      await api.post('/tools', {
+        title,
+        link,
+        description,
+        tags: tags.split(','),
+      });
       toast.success('New tool registered!');
       const response = await api.get('/tools');
       setTools(response.data);
@@ -87,7 +98,7 @@ export default function Dashboard() {
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
-            <input type="checkbox" id="tags" />
+            <input type="checkbox" id="tags" checked disabled />
             <label htmlFor="tags">search for tags only</label>
           </div>
           <Button onClick={() => setModal(true)} type="button" color="#7159c1">
@@ -114,7 +125,7 @@ export default function Dashboard() {
                   </button>
                 </div>
                 <p>{tool.description}</p>
-                <span>{tool.tags}</span>
+                <span>{tool.hashTag}</span>
               </li>
             ))}
           </ul>
@@ -144,8 +155,12 @@ export default function Dashboard() {
             <label htmlFor="description">Tool Description</label>
             <Input name="description" id="description" />
 
-            <label htmlFor="tags">Tags</label>
-            <Input name="tags" id="tags" />
+            <label htmlFor="tags">Tags (separated by comma)</label>
+            <Input
+              name="tags"
+              id="tags"
+              placeholder="node,react,react native"
+            />
           </Form>
           <Button
             form="tool-form"
