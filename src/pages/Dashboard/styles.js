@@ -3,7 +3,6 @@ import { darken } from 'polished';
 
 export const Container = styled.div`
   padding: 0 30px;
-  background: #eee;
   height: 100%;
 `;
 
@@ -24,7 +23,6 @@ export const Content = styled.div`
   }
 
   h2 {
-    font-weight: normal;
     margin-bottom: 30px;
   }
 `;
@@ -37,6 +35,7 @@ export const Header = styled.div`
   div {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
     input {
       margin-left: 20px;
@@ -48,6 +47,7 @@ export const Header = styled.div`
       }
 
       :first-child {
+        display: inline-block;
         margin-left: 0;
         width: 170px;
         height: 30px;
@@ -55,6 +55,13 @@ export const Header = styled.div`
         background: #fff;
         border: 1px solid #dddddd;
         padding: 0 30px 0 12px;
+
+        ::before {
+          font-family: 'FontAwesome';
+          content: '\f274';
+          position: absolute;
+          right: 6px;
+        }
       }
     }
 
@@ -96,6 +103,7 @@ export const Tools = styled.div`
   margin-top: 15px;
 
   li {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background: #fff;
     border: 1px solid #7159c1;
     border-radius: 4px;

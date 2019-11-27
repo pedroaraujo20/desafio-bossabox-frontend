@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Input } from '@rocketseat/unform';
-import { MdAdd, MdClose } from 'react-icons/md';
+import { MdAdd, MdClose, MdSearch } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import api from '../../services/api';
@@ -19,38 +19,29 @@ export default function Dashboard() {
   const [tools, setTools] = useState([]);
   const [search, setSearch] = useState('');
   const [selectedTool, setSelectedTool] = useState();
-  const [filteredTool, setFilteredTool] = useState([]);
   const [modal, setModal] = useState(false);
   const [modalRemove, setModalRemove] = useState(false);
 
-  /* useEffect(() => {
-    async function handleSearch() {
-      if (search !== '') {
-        const response = await api.get(`tools?tag=${search}`);
-        setFilteredTool(response.data);
-        console.log(search, filteredTool);
-      }
+  async function loadTools() {
+    try {
+      const response = await api.get('/tools', {
+        params: { tag: search },
+      });
+
+      const data = response.data.map(tool => ({
+        ...tool,
+        hashTag: tool.tags.map(tag => `#${tag} `),
+      }));
+
+      setTools(data);
+    } catch (err) {
+      toast.error(err);
     }
-    handleSearch();
-  }, [search]);//eslint-disable-line */
+  }
 
   useEffect(() => {
-    async function loadTools() {
-      try {
-        const response = await api.get('/tools');
-
-        const data = response.data.map(tool => ({
-          ...tool,
-          hashTag: tool.tags.map(tag => `#${tag} `),
-        }));
-
-        setTools(data);
-      } catch (err) {
-        toast.error(err);
-      }
-    }
     loadTools();
-  }, []);
+  }, []); //eslint-disable-line
 
   async function handleSubmit({ title, link, description, tags }) {
     try {
@@ -80,6 +71,7 @@ export default function Dashboard() {
       setModalRemove(false);
 
       setTools(newToolList);
+      setSelectedTool();
     } catch (err) {
       toast.error(err);
     }
@@ -96,7 +88,14 @@ export default function Dashboard() {
               type="text"
               placeholder="search"
               value={search}
+              onKeyDown={e => e.key === 'Enter' && loadTools()}
               onChange={e => setSearch(e.target.value)}
+            />
+            <MdSearch
+              size={20}
+              color="#ccc"
+              style={{ marginLeft: -25, cursor: 'pointer' }}
+              onClick={() => loadTools()}
             />
             <input type="checkbox" id="tags" checked disabled />
             <label htmlFor="tags">search for tags only</label>
